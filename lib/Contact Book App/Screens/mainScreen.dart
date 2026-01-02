@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -8,60 +9,100 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  TextEditingController nameController=TextEditingController();
-  TextEditingController numberController=TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
+
+  @override 
+  void dispose() {
+    nameController.dispose();
+    numberController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("SQflite Test")),
+      appBar: AppBar(title: const Text("SQflite Test"), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.all(28.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text("name")
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Name",
+              ),
+            ),
+            const SizedBox(height: 15),
+            TextField(
+              controller: numberController,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Mobile Number",
+              ),
+            ),
+            const SizedBox(height: 35),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                /// INSERT → SnackBar
+                ElevatedButton(
+                  onPressed: () {
+                    Fluttertoast.showToast(
+                      msg: "Data Inserted",
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                    );
+                  },
+                  child: const Text(
+                    "Insert",
+                    style: TextStyle(color: Colors.blue),
+                  ),
                 ),
-              ),
-              SizedBox(height: 15,),
-              SizedBox(height: 5,),
-              TextField(
-                controller: numberController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  label: Text("mobile number")
+
+                /// UPDATE → Toast
+                ElevatedButton(
+                  onPressed: () {
+                    Fluttertoast.cancel();
+
+                    Fluttertoast.showToast(
+                      msg: "Data Updated",
+                      gravity: ToastGravity.BOTTOM,
+                      textColor: Colors.black,
+                      backgroundColor: Colors.amber,
+                    );
+                  },
+                  child: const Text(
+                    "Update",
+                    style: TextStyle(color: Colors.amber),
+                  ),
                 ),
-              ),
-              SizedBox(height: 35,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      
-                    },
-                    child: const Text("Insert",style: TextStyle(color: Colors.blue),),
+
+                /// CLEAR
+                ElevatedButton(
+                  onPressed: () {
+                    nameController.clear();
+                    numberController.clear();
+
+                    Fluttertoast.showToast(
+                      msg: "Everything Cleared",
+                      gravity: ToastGravity.BOTTOM,
+                      textColor: Colors.white,
+                      backgroundColor: Colors.red,
+                    );
+                  },
+                  child: const Text(
+                    "Clear",
+                    style: TextStyle(color: Colors.red),
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      
-                    },
-                    child: const Text("Update",style: TextStyle(color: Colors.amber),),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      
-                    },
-                    child: const Text("Clear",style: TextStyle(color: Colors.red),),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

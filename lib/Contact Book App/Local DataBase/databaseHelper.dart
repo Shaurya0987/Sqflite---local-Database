@@ -29,7 +29,6 @@ class DatabaseHelper {
       CREATE TABLE contacts (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        subName TEXT,
         phone TEXT NOT NULL
       )
     ''');
@@ -40,7 +39,6 @@ class DatabaseHelper {
   // INSERT
   Future<void> insertContact(
     String name,
-    String subName,
     String phone,
   ) async {
     final db = await database;
@@ -48,7 +46,6 @@ class DatabaseHelper {
       'contacts',
       {
         'name': name,
-        'subName': subName,
         'phone': phone,
       },
     );
@@ -64,7 +61,6 @@ class DatabaseHelper {
   Future<void> updateContact(
     int id,
     String name,
-    String subName,
     String phone,
   ) async {
     final db = await database;
@@ -72,7 +68,6 @@ class DatabaseHelper {
       'contacts',
       {
         'name': name,
-        'subName': subName,
         'phone': phone,
       },
       where: 'id = ?',
