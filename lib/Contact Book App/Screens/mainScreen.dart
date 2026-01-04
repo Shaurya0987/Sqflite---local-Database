@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+
+import 'package:localdb/Contact Book App/Providers/contactProvider.dart';
+import 'package:localdb/Contact Book App/Screens/ContactShowingScreen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController numberController = TextEditingController();
 
-  @override 
+  @override
   void dispose() {
     nameController.dispose();
     numberController.dispose();
@@ -21,13 +25,19 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<ContactProvider>();
+
     return Scaffold(
-      appBar: AppBar(title: const Text("SQflite Test"), centerTitle: true),
+      appBar: AppBar(
+        title: const Text("Contact Book"),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(28.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            /// NAME
             TextField(
               controller: nameController,
               decoration: const InputDecoration(
@@ -35,7 +45,10 @@ class _MainScreenState extends State<MainScreen> {
                 labelText: "Name",
               ),
             ),
+
             const SizedBox(height: 15),
+
+            /// MOBILE NUMBER
             TextField(
               controller: numberController,
               keyboardType: TextInputType.phone,
@@ -44,63 +57,85 @@ class _MainScreenState extends State<MainScreen> {
                 labelText: "Mobile Number",
               ),
             ),
+
             const SizedBox(height: 35),
 
+            /// BUTTONS
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                /// INSERT → SnackBar
+                /// INSERT
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    if (nameController.text.isEmpty ||
+                        numberController.text.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: "Please enter all fields",
+                        backgroundColor: Colors.red,
+                      );
+                      return;
+                    }
+
+                    await provider.addContact(
+                      nameController.text.trim(),
+                      numberController.text.trim(),
+                    );
+
+                    nameController.clear();
+                    numberController.clear();
+
                     Fluttertoast.showToast(
-                      msg: "Data Inserted",
+                      msg: "Contact Added",
                       backgroundColor: Colors.blue,
                       textColor: Colors.white,
                     );
-                  },
-                  child: const Text(
-                    "Insert",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
 
-                /// UPDATE → Toast
-                ElevatedButton(
-                  onPressed: () {
-                    Fluttertoast.cancel();
-
-                    Fluttertoast.showToast(
-                      msg: "Data Updated",
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.black,
-                      backgroundColor: Colors.amber,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const ContactShowingScreen(),
+                      ),
                     );
                   },
-                  child: const Text(
-                    "Update",
-                    style: TextStyle(color: Colors.amber),
-                  ),
+                  child: const Text("Insert"),
                 ),
 
                 /// CLEAR
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                  ),
                   onPressed: () {
                     nameController.clear();
                     numberController.clear();
 
                     Fluttertoast.showToast(
-                      msg: "Everything Cleared",
-                      gravity: ToastGravity.BOTTOM,
-                      textColor: Colors.white,
+                      msg: "Fields Cleared",
                       backgroundColor: Colors.red,
+                      textColor: Colors.white,
                     );
                   },
-                  child: const Text(
-                    "Clear",
-                    style: TextStyle(color: Colors.red),
-                  ),
+                  child: const Text("Clear"),
                 ),
               ],
+            ),
+
+            const SizedBox(height: 40),
+
+            /// GO TO CONTACT PAGE
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ContactShowingScreen(),
+                  ),
+                );
+              },
+              child: const Text(
+                "Go to Contact Page",
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),

@@ -57,7 +57,7 @@ class _ContactShowingScreenState extends State<ContactShowingScreen> {
 
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min, // 🔑 KEY FIX
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     name,
