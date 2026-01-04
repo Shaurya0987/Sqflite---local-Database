@@ -5,71 +5,69 @@ class Listviewbuilderdemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final List<Map<String,String>>items=[
+    final List<Map<String, String>> items = [
       {
-        "image" : "assets/outLookRestaurant.jpg",
-        "title" : "New Outlook Restaurant",
-        "subtitle" : "only for a hour sale"
+        "image": "assets/outLookRestaurant.jpg",
+        "title": "New Outlook Restaurant",
+        "subtitle": "only for a hour sale",
       },
       {
-        "image" : "assets/picture1.jpg",
-        "title" : "Spagetti",
-        "subtitle" : "hot and soft"
+        "image": "assets/picture1.jpg",
+        "title": "Spagetti",
+        "subtitle": "hot and soft",
       },
       {
-        "image" : "assets/outLookRestaurant.jpg",
-        "title" : "New Outlook Restaurant",
-        "subtitle" : "only for a hour sale"
+        "image": "assets/outLookRestaurant.jpg",
+        "title": "New Outlook Restaurant",
+        "subtitle": "only for a hour sale",
       },
       {
-        "image" : "assets/picture1.jpg",
-        "title" : "Spagetti",
-        "subtitle" : "hot and soft"
+        "image": "assets/picture1.jpg",
+        "title": "Spagetti",
+        "subtitle": "hot and soft",
       },
       {
-        "image" : "assets/outLookRestaurant.jpg",
-        "title" : "New Outlook Restaurant",
-        "subtitle" : "only for a hour sale"
+        "image": "assets/outLookRestaurant.jpg",
+        "title": "New Outlook Restaurant",
+        "subtitle": "only for a hour sale",
       },
       {
-        "image" : "assets/picture1.jpg",
-        "title" : "Spagetti",
-        "subtitle" : "hot and soft"
+        "image": "assets/picture1.jpg",
+        "title": "Spagetti",
+        "subtitle": "hot and soft",
       },
       {
-        "image" : "assets/outLookRestaurant.jpg",
-        "title" : "New Outlook Restaurant",
-        "subtitle" : "only for a hour sale"
+        "image": "assets/outLookRestaurant.jpg",
+        "title": "New Outlook Restaurant",
+        "subtitle": "only for a hour sale",
       },
       {
-        "image" : "assets/picture1.jpg",
-        "title" : "Spagetti",
-        "subtitle" : "hot and soft"
+        "image": "assets/picture1.jpg",
+        "title": "Spagetti",
+        "subtitle": "hot and soft",
       },
       {
-        "image" : "assets/picture2.jpg",
-        "title" : "Samose",
-        "subtitle" : "only for last 3 person left"
+        "image": "assets/picture2.jpg",
+        "title": "Samose",
+        "subtitle": "only for last 3 person left",
       },
       {
-        "image" : "assets/picture3.jpg",
-        "title" : "Pizza",
-        "subtitle" : "only 4 left"
+        "image": "assets/picture3.jpg",
+        "title": "Pizza",
+        "subtitle": "only 4 left",
       },
       {
-        "image" : "assets/picture3.jpg",
-        "title" : "Pizza",
-        "subtitle" : "only 4 left"
+        "image": "assets/picture3.jpg",
+        "title": "Pizza",
+        "subtitle": "only 4 left",
       },
       {
-        "image" : "assets/picture3.jpg",
-        "title" : "Pizza",
-        "subtitle" : "only 4 left"
+        "image": "assets/picture3.jpg",
+        "title": "Pizza",
+        "subtitle": "only 4 left",
       },
-      
     ];
-    
+
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
@@ -86,22 +84,24 @@ class Listviewbuilderdemo extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(28.0),
-        child: items.isEmpty?
-        Center(child: Text("No Items Present in the List",style: TextStyle(
-          color: Colors.grey.shade800,
-          fontSize: 21
-        ),),):
-        ListView.builder(
-          physics: BouncingScrollPhysics(),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-              return WidgetContainer(
-                image: items[index]["image"]!,
-                title: items[index]["title"]!, 
-                subtitle: items[index]["subtitle"]!
-                );
-          },
-        ),
+        child: items.isEmpty
+            ? Center(
+                child: Text(
+                  "No Items Present in the List",
+                  style: TextStyle(color: Colors.grey.shade800, fontSize: 21),
+                ),
+              )
+            : ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return WidgetContainer(
+                    image: items[index]["image"]!,
+                    title: items[index]["title"]!,
+                    subtitle: items[index]["subtitle"]!,
+                  );
+                },
+              ),
       ),
     );
   }
@@ -112,7 +112,10 @@ class WidgetContainer extends StatelessWidget {
   final String title;
   final String subtitle;
   const WidgetContainer({
-    super.key, required this.image, required this.title, required this.subtitle,
+    super.key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
   });
 
   @override
@@ -132,9 +135,12 @@ class WidgetContainer extends StatelessWidget {
               radius: 30,
               backgroundImage: AssetImage(image),
             ),
-            title: Text(title,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
-            subtitle: Text(subtitle,style: TextStyle(fontSize: 13),),
-            trailing: Icon(Icons.arrow_forward_ios_rounded,size: 18,),
+            title: Text(
+              title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            ),
+            subtitle: Text(subtitle, style: TextStyle(fontSize: 13)),
+            trailing: Icon(Icons.arrow_forward_ios_rounded, size: 18),
           ),
         ),
       ),

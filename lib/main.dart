@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:localdb/Contact%20Book%20App/Providers/contactProvider.dart';
 import 'package:localdb/Contact%20Book%20App/Screens/mainScreen.dart';
 import 'package:localdb/Screens/ListViewBuilderDemo.dart';
+import 'package:localdb/Screens/ListViewBuilderDemo2.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Listviewbuilderdemo(),
+      home: Listviewbuilderdemo2(),
     );
   }
 }
