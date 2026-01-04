@@ -15,18 +15,16 @@ class ContactProvider extends ChangeNotifier {
   /// INSERT DATA
   Future<void> addContact(
     String name,
-    String subName,
     String mobileNo,
   ) async {
     await db.insertContact(name, mobileNo);
-    await getAllContacts(); // notify inside
+    await getAllContacts();
   }
 
   /// UPDATE DATA
   Future<void> updateContact(
     int id,
     String name,
-    String subName,
     String mobileNo,
   ) async {
     await db.updateContact(id, name, mobileNo);

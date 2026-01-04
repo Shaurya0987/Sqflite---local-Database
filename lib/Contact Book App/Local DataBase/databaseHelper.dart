@@ -96,7 +96,8 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(
       'contacts',
-      orderBy: 'name ASC',
+      orderBy: 'name ASC',  
     );
   }
 }
+
