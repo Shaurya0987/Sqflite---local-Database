@@ -34,13 +34,8 @@ class DatabaseHelper {
     ''');
   }
 
-  // ================= CRUD =================
-
   // INSERT
-  Future<void> insertContact(
-    String name,
-    String phone,
-  ) async {
+  Future<void> insertContact(String name, String phone) async {
     final db = await database;
     await db.insert(
       'contacts',
@@ -58,11 +53,7 @@ class DatabaseHelper {
   }
 
   // UPDATE
-  Future<void> updateContact(
-    int id,
-    String name,
-    String phone,
-  ) async {
+  Future<void> updateContact(int id, String name, String phone) async {
     final db = await database;
     await db.update(
       'contacts',
@@ -90,14 +81,4 @@ class DatabaseHelper {
     final db = await database;
     await db.delete('contacts');
   }
-
-  // SORT BY NAME
-  Future<List<Map<String, dynamic>>> getContactsSortedByName() async {
-    final db = await database;
-    return await db.query(
-      'contacts',
-      orderBy: 'name ASC',  
-    );
-  }
 }
-

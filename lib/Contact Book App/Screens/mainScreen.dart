@@ -115,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
                       textColor: Colors.white,
                     );
                   },
-                  child: const Text("Clear"),
+                  child: const Text("Clear",style: TextStyle(color: Colors.white),),
                 ),
               ],
             ),

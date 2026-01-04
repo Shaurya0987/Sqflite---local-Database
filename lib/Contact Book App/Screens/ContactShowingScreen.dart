@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:localdb/Contact Book App/Providers/contactProvider.dart';
 
-class ContactShowingScreen extends StatefulWidget {
+class ContactShowingScreen extends StatelessWidget {
   const ContactShowingScreen({super.key});
 
   @override
-  State<ContactShowingScreen> createState() => _ContactShowingScreenState();
-}
-
-class _ContactShowingScreenState extends State<ContactShowingScreen> {
-  @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ContactProvider>();
+
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
@@ -20,15 +19,31 @@ class _ContactShowingScreenState extends State<ContactShowingScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: contactTile(
-          name: "Shaurya Thakur",
-          phone: "7876340045",
-        ),
+        child: provider.contacts.isEmpty
+            ? const Center(
+                child: Text(
+                  "No contacts found",
+                  style: TextStyle(fontSize: 18),
+                ),
+              )
+            : ListView.builder(
+                itemCount: provider.contacts.length,
+                itemBuilder: (context, index) {
+                  final contact = provider.contacts[index];
+
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: contactTile(
+                      name: contact["name"] ?? "",
+                      phone: contact["phone"] ?? "",
+                    ),
+                  );
+                },
+              ), 
       ),
     );
   }
 
-  /// Contact Card Widget
   Widget contactTile({
     required String name,
     required String phone,
@@ -40,49 +55,32 @@ class _ContactShowingScreenState extends State<ContactShowingScreen> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          /// LEFT SIDE (Avatar + Text)
-          Row(
+          const CircleAvatar(
+            radius: 22,
+            backgroundColor: Colors.grey,
+            child: Icon(Icons.contacts_rounded, color: Colors.black),
+          ),
+          const SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
-                radius: 22,
-                backgroundColor: Colors.grey,
-                child: Icon(
-                  Icons.contacts_rounded,
-                  color: Colors.black,
+              Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(width: 16),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    phone,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 4),
+              Text(
+                phone,
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.grey.shade700,
+                ),
               ),
             ],
-          ),
-
-          /// RIGHT ARROW
-          const Icon(
-            Icons.arrow_forward_ios_outlined,
-            size: 16,
           ),
         ],
       ),
