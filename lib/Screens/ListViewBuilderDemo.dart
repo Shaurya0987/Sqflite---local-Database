@@ -1,83 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:localdb/Providers/firstListViewProvider.dart';
+import 'package:provider/provider.dart';
 
 class Listviewbuilderdemo extends StatelessWidget {
   const Listviewbuilderdemo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> items = [
-      {
-        "image": "assets/outLookRestaurant.jpg",
-        "title": "New Outlook Restaurant",
-        "subtitle": "only for a hour sale",
-      },
-      {
-        "image": "assets/picture1.jpg",
-        "title": "Spagetti",
-        "subtitle": "hot and soft",
-      },
-      {
-        "image": "assets/outLookRestaurant.jpg",
-        "title": "New Outlook Restaurant",
-        "subtitle": "only for a hour sale",
-      },
-      {
-        "image": "assets/picture1.jpg",
-        "title": "Spagetti",
-        "subtitle": "hot and soft",
-      },
-      {
-        "image": "assets/outLookRestaurant.jpg",
-        "title": "New Outlook Restaurant",
-        "subtitle": "only for a hour sale",
-      },
-      {
-        "image": "assets/picture1.jpg",
-        "title": "Spagetti",
-        "subtitle": "hot and soft",
-      },
-      {
-        "image": "assets/outLookRestaurant.jpg",
-        "title": "New Outlook Restaurant",
-        "subtitle": "only for a hour sale",
-      },
-      {
-        "image": "assets/picture1.jpg",
-        "title": "Spagetti",
-        "subtitle": "hot and soft",
-      },
-      {
-        "image": "assets/picture2.jpg",
-        "title": "Samose",
-        "subtitle": "only for last 3 person left",
-      },
-      {
-        "image": "assets/picture3.jpg",
-        "title": "Pizza",
-        "subtitle": "only 4 left",
-      },
-      {
-        "image": "assets/picture3.jpg",
-        "title": "Pizza",
-        "subtitle": "only 4 left",
-      },
-      {
-        "image": "assets/picture3.jpg",
-        "title": "Pizza",
-        "subtitle": "only 4 left",
-      },
-    ];
+    // WATCH provider for UI updates
+    final provider = context.watch<FirstItemProvider>();
+    final items = provider.items;
 
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.grey.shade700,
         centerTitle: true,
-        title: Text("My items", style: TextStyle(color: Colors.white)),
-        leading: Icon(Icons.arrow_back, size: 27, color: Colors.white),
-        actions: [
+        title: const Text("My items", style: TextStyle(color: Colors.white)),
+        leading: const Icon(Icons.arrow_back, size: 27, color: Colors.white),
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: EdgeInsets.only(right: 10.0),
             child: Icon(Icons.more_vert_outlined, color: Colors.white),
           ),
         ],
@@ -88,34 +31,50 @@ class Listviewbuilderdemo extends StatelessWidget {
             ? Center(
                 child: Text(
                   "No Items Present in the List",
-                  style: TextStyle(color: Colors.grey.shade800, fontSize: 21),
+                  style: TextStyle(
+                    color: Colors.grey.shade800,
+                    fontSize: 21,
+                  ),
                 ),
               )
             : ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   return WidgetContainer(
-                    image: items[index]["image"]!,
-                    title: items[index]["title"]!,
-                    subtitle: items[index]["subtitle"]!,
+                    age: items[index]["age"],
+                    title: items[index]["title"],
+                    subtitle: items[index]["subtitle"],
                   );
                 },
               ),
+      ),
+
+      /// TEMP BUTTON TO ADD DATA (SAFE PLACE)
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.read<FirstItemProvider>().addItem(
+                "2133",
+                "Pizzaess",
+                "Only 423 left",
+              );
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
 }
 
+
 class WidgetContainer extends StatelessWidget {
-  final String image;
+  final String age;
   final String title;
   final String subtitle;
   const WidgetContainer({
     super.key,
-    required this.image,
     required this.title,
     required this.subtitle,
+    required this.age,
   });
 
   @override
@@ -131,10 +90,7 @@ class WidgetContainer extends StatelessWidget {
         ),
         child: Center(
           child: ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage(image),
-            ),
+            leading: CircleAvatar(radius: 30, child: Text(age)),
             title: Text(
               title,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
