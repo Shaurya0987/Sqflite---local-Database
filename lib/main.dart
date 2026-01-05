@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:localdb/Contact%20Book%20App/Providers/contactProvider.dart';
-import 'package:localdb/Contact%20Book%20App/Screens/mainScreen.dart';
-import 'package:localdb/Providers/firstListViewProvider.dart';
-import 'package:localdb/Providers/secondListViewProvider.dart';
 import 'package:localdb/Providers/thirdListViewB.uilderProvider.dart';
-import 'package:localdb/Screens/ListViewBuilderDemo.dart';
-import 'package:localdb/Screens/ListViewBuilderDemo2.dart';
 import 'package:localdb/Screens/ListViewBuilderDemo3.dart';
 import 'package:provider/provider.dart';
 
