@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:localdb/Providers/secondListViewProvider.dart';
+import 'package:provider/provider.dart';
 
 class Listviewbuilderdemo2 extends StatelessWidget {
   const Listviewbuilderdemo2({super.key});
@@ -6,33 +8,8 @@ class Listviewbuilderdemo2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<Map<String,String>>items=[
-      {
-        "image" : "assets/outLookRestaurant.jpg",
-        "title" : "Nordiac Expedition",
-        "subtitle" :"i want to live my life freely and dont want to sat in stress for any other else,iykny i mean to say",
-      },
-      {
-        "image" : "assets/picture1.jpg",
-        "title" : "Nordiac Expedition",
-        "subtitle" :"i want to live my life freely and dont want to sat in stress for any other else,iykny i mean to say" 
-      },
-      {
-        "image" : "assets/picture2.jpg",
-        "title" : "Nordiac Expedition",
-        "subtitle" : "i want to live my life freely and dont want to sat in stress for any other else,iykny i mean to say" 
-      },
-      {
-        "image" : "assets/picture3.jpg",
-        "title" : "Nordiac Expedition",
-        "subtitle" : "i want to live my life freely and dont want to sat in stress for any other else,iykny i mean to say" 
-      },
-      {
-        "image" : "assets/picture17.jpg",
-        "title" : "Nordiac Expedition",
-        "subtitle" : "i want to live my life freely and dont want to sat in stress for any other else,iykny i mean to say"
-      },
-    ];
+    final provider=context.watch<Secondlistviewprovider>();
+    final items=provider.items;
 
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
@@ -65,6 +42,9 @@ class Listviewbuilderdemo2 extends StatelessWidget {
           },
         )
         ),
+        floatingActionButton: FloatingActionButton(onPressed: (){
+          provider.addItem("assets/outLookRestaurant.jpg", "Big Restaurnet", "I knovery good restaurant but i cant afford it because i have money. i also want a investment");
+        },child: Icon(Icons.add),),
       );
   }
 }
@@ -82,7 +62,7 @@ class ContainerWidetofListviw extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
-        height: 355,
+        // height: 355,
         width: double.infinity,
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 34, 63, 35),
