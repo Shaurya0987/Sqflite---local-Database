@@ -62,7 +62,6 @@ class ContainerWidetofListviw extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
-        // height: 355,
         width: double.infinity,
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 34, 63, 35),
