@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:localdb/Full%20Local%20DataBase%20With%20Notes/Provider/NotesProvider.dart';
+import 'package:localdb/Full Local DataBase With Notes/Provider/NotesProvider.dart';
 import 'package:provider/provider.dart';
 
 class Homescreen extends StatefulWidget {
@@ -17,8 +17,8 @@ class _HomescreenState extends State<Homescreen> {
     super.dispose();
   }
 
-  TextEditingController titleController = TextEditingController();
-  TextEditingController subtitleController = TextEditingController();
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController subtitleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,54 +30,40 @@ class _HomescreenState extends State<Homescreen> {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade800,
         centerTitle: true,
-        title: Text("My items", style: TextStyle(color: Colors.white)),
-        leading: Icon(Icons.arrow_back, size: 27, color: Colors.white),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: Icon(Icons.more_vert_outlined, color: Colors.white),
-          ),
-        ],
+        title: const Text("My Notes", style: TextStyle(color: Colors.white)),
       ),
       body: Padding(
         padding: const EdgeInsets.all(28.0),
         child: notes.isEmpty
-            ? Center(child: Text("No Notes Present"))
+            ? const Center(child: Text("No Notes Present"))
             : Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
-                          provider.sortNotes();
-                        },
-                        child: Text("Sort"),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          
-                        },
-                        child: Text("Update"),
+                        onPressed: provider.sortNotes,
+                        child: const Text("Newest"),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           provider.clearAll();
                         },
-                        child: Text("Clear All"),
+                        child: const Text("Clear All"),
                       ),
                     ],
                   ),
-                  Divider(height: 40,),
-                  // SizedBox(height: 20),
+                  const Divider(height: 40),
                   Expanded(
                     child: ListView.builder(
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       itemCount: notes.length,
                       itemBuilder: (context, index) {
+                        final note = notes[index];
                         return ListContainer(
-                          title: notes[index]["title"]!,
-                          subtitle: notes[index]["subtitle"]!,
+                          id: note["id"],
+                          title: note["title"],
+                          subtitle: note["subtitle"],
                         );
                       },
                     ),
@@ -86,72 +72,57 @@ class _HomescreenState extends State<Homescreen> {
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          DialogBoxx(context, provider);
-        },
-        child: Icon(Icons.add),
+        onPressed: () => _showAddDialog(context, provider),
+        child: const Icon(Icons.add),
       ),
     );
   }
 
-  Future<dynamic> DialogBoxx(BuildContext context, NotesProvider provider) {
+  // ================= ADD NOTE =================
+  Future<void> _showAddDialog(
+      BuildContext context, NotesProvider provider) {
+    titleController.clear();
+    subtitleController.clear();
+
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Add Note"),
+          title: const Text("Add Note"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: const InputDecoration(labelText: "Title"),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: subtitleController,
+                decoration: const InputDecoration(labelText: "Subtitle"),
+              ),
+            ],
+          ),
           actions: [
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text("Title..."),
-              ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
             ),
-            SizedBox(height: 10),
-            TextField(
-              controller: subtitleController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text("SubTitle..."),
-              ),
-            ),
-            SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text("Cancel"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (titleController.text.trim().isEmpty ||
-                        subtitleController.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Fill all the Detailsss")),
-                      );
-                      Navigator.pop(context);
-                      return;
-                    }
+            ElevatedButton(
+              onPressed: () {
+                if (titleController.text.trim().isEmpty ||
+                    subtitleController.text.trim().isEmpty) {
+                  return;
+                }
 
-                    provider.addItem(
-                      titleController.text.trim(),
-                      subtitleController.text.trim(),
-                    );
+                provider.addItem(
+                  titleController.text.trim(),
+                  subtitleController.text.trim(),
+                );
 
-                    ScaffoldMessenger.of(
-                      context,
-                    ).showSnackBar(SnackBar(content: Text("Note Saved")));
-                    titleController.clear();
-                    subtitleController.clear();
-                    Navigator.pop(context);
-                  },
-                  child: Text("Save"),
-                ),
-              ],
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
             ),
           ],
         );
@@ -160,38 +131,79 @@ class _HomescreenState extends State<Homescreen> {
   }
 }
 
+
 class ListContainer extends StatelessWidget {
+  final int id;
   final String title;
   final String subtitle;
-  const ListContainer({super.key, required this.title, required this.subtitle});
+
+  const ListContainer({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        // height: 50,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
+      child: ListTile(
+        tileColor: Colors.white,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Center(
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 30,
-              backgroundColor: Colors.deepOrange.shade100,
-              child: Icon(Icons.note_sharp, color: Colors.deepOrange, size: 30),
-            ),
-            title: Text(title, style: TextStyle(fontSize: 17)),
-            subtitle: Text(
-              subtitle,
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
-            ),
-            trailing: Icon(Icons.arrow_forward_ios, size: 20),
-          ),
+        leading: CircleAvatar(
+          backgroundColor: Colors.deepOrange.shade100,
+          child: const Icon(Icons.note),
         ),
+        title: Text(title),
+        subtitle: Text(subtitle),
+        trailing: IconButton(onPressed: (){
+          context.read<NotesProvider>().delete(id);
+        }, icon: Icon(Icons.delete),color: Colors.red,),
+        onTap: () => _showEditDialog(context),
       ),
+    );
+  }
+
+  // ================= UPDATE NOTE =================
+  void _showEditDialog(BuildContext context) {
+    final titleCtrl = TextEditingController(text: title);
+    final subtitleCtrl = TextEditingController(text: subtitle);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Edit Note"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(controller: titleCtrl),
+              const SizedBox(height: 10),
+              TextField(controller: subtitleCtrl),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.read<NotesProvider>().updateNote(
+                      id,
+                      titleCtrl.text.trim(),
+                      subtitleCtrl.text.trim(),
+                    );
+                Navigator.pop(context);
+              },
+              child: const Text("Update"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
