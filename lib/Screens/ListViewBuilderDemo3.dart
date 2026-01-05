@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:localdb/Providers/thirdListViewB.uilderProvider.dart';
+import 'package:provider/provider.dart';
 
 class Listviewbuilderdemo3 extends StatelessWidget {
   const Listviewbuilderdemo3({super.key});
@@ -6,40 +8,8 @@ class Listviewbuilderdemo3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<Map<String,String>>notes=[
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-      {
-        "title" : "Learn Biology",
-        "description" : "Chapter 1 , 3 are important for the final term papers. this time the papers are arriving very soon"
-      },
-    ];
+    final provider=context.watch<ThirdListViewBuilderProvider>();
+    final notes=provider.items;
     
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
@@ -65,11 +35,14 @@ class Listviewbuilderdemo3 extends StatelessWidget {
             itemBuilder: (context, index) {
               return ListContainer(
                 title: notes[index]["title"]!, 
-                subtitle: notes[index]["description"]!);
+                subtitle: notes[index]["subtitle"]!);
             },
           )),
-        
-        );
+          floatingActionButton: FloatingActionButton(
+            onPressed: (){
+              provider.addItem("Learn Biolog", " CHapter 1,3 are very important and hold a very prestige importance in the biology book in the ,ap");
+            },child: Icon(Icons.add),)
+          );
       
   }
 }
