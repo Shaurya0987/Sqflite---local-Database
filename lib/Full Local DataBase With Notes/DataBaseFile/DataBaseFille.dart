@@ -82,4 +82,6 @@ class NotesHelper {
       orderBy: 'id DESC', // newest first
     );
   }
+
+  
 }

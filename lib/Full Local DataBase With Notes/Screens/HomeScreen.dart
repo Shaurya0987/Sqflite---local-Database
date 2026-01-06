@@ -18,6 +18,7 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   final TextEditingController titleController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   final TextEditingController subtitleController = TextEditingController();
 
   @override
@@ -38,6 +39,17 @@ class _HomescreenState extends State<Homescreen> {
             ? const Center(child: Text("No Notes Present"))
             : Column(
                 children: [
+                  TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Search any Notes")
+                    ),
+                    onChanged: (value) {
+                      provider.searchNotes(searchController.text);
+                    },
+                  ),
+                  SizedBox(height: 15,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
